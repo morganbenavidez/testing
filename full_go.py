@@ -44,7 +44,6 @@ def truncate(x):
 
 def double_write(bar02, scd30, bmp, radiationWatch, date_var, time_var, ran_already, flag, ran_already_backup):
 
-    #ran_already_backup = False
     # Set file_paths
     current_path = os.path.dirname(os.path.abspath(__file__))
     os.chdir(current_path)
@@ -96,9 +95,9 @@ def double_write(bar02, scd30, bmp, radiationWatch, date_var, time_var, ran_alre
         except:
             bmp_temperature, bmp_pressure, bmp_altitude = 'null', 'null', 'null'
 
+        # Sensor 4
         try:
             radiation_status = radiationWatch.status()
-            #print(radiationWatch.status())
             duration = radiation_status.get('duration', 'null')
             uSvh = radiation_status.get('uSvh', 'null')
             uSvhError = radiation_status.get('uSvhError', 'null')
@@ -124,14 +123,14 @@ def double_write(bar02, scd30, bmp, radiationWatch, date_var, time_var, ran_alre
         # Continue reading sensors and writing to files
         if flag == 'continue':
 
-            time.sleep(10)
+            time.sleep(6)
 
             ran_already = True
 
         # Execute a transmission and delete main.csv
         elif flag == 'transmit':
             
-            time.sleep(10)
+            time.sleep(6)
 
             os.remove(csv_path)
 
@@ -153,7 +152,7 @@ def read_all_sensors(bar02, scd30, bmp, radiationWatch, loop_counter, ran_alread
 
     # There will only be approximately 6 writes a minute
     # This is controlling whether or not to delete the transmit csv
-    if (loop_counter % 6) == 0:
+    if (loop_counter % 10) == 0:
         flag = 'transmit'
     else:
         flag = 'continue'
