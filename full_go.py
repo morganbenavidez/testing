@@ -116,9 +116,21 @@ def double_write(bar02, scd30, bmp, radiationWatch, date_var, time_var, ran_alre
         total_values = [truncate(x) for x in total_values]
         print('total_values: ',total_values)
 
-        # Backup and transmit data
-        transmit_writer.writerow(total_values)
-        backup_writer.writerow(total_values)
+        try:
+            # Backup and transmit data
+            transmit_writer.writerow(total_values)
+
+        except:
+            
+            print('corrupted transmit file')
+
+        try:
+            
+            backup_writer.writerow(total_values)
+
+        except:
+            
+            print('corrupted backup')
 
         # Continue reading sensors and writing to files
         if flag == 'continue':
